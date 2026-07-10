@@ -154,10 +154,12 @@ const POOL_ICONS = [
 
 // Deterministic-ish pick so SSR + client match per card
 function pickIcons(seed, count = 5) {
-  const shuffled = [...POOL_ICONS].sort(
-    (a, b) => ((seed * 17 + a.name.length) % 11) - ((seed * 13 + b.name.length) % 11)
+  // Use the index for sorting instead of .name since .name is undefined on forwardRef in production
+  const withIndex = POOL_ICONS.map((Icon, idx) => ({ Icon, idx }));
+  const shuffled = withIndex.sort(
+    (a, b) => ((seed * 17 + a.idx) % 11) - ((seed * 13 + b.idx) % 11)
   );
-  return shuffled.slice(0, count);
+  return shuffled.slice(0, count).map(obj => obj.Icon);
 }
 
 // ─────────────────────────────────────────────
