@@ -145,12 +145,16 @@ const ProjectCard = ({ project, index, scrollYProgress }) => {
   const end = (index + 1) / total;
   const center = (start + end) / 2;
 
+  // Clamp values strictly between 0 and 1 for WAAPI compatibility in Framer Motion
+  const inStart = Math.max(0, start - 0.05);
+  const inEnd = Math.min(1, end + 0.05);
+
   // Animate values based on scroll distance to center
-  const scale = useTransform(scrollYProgress, [start - 0.05, center, end + 0.05], [0.8, 1, 0.8]);
-  const opacity = useTransform(scrollYProgress, [start - 0.05, center, end + 0.05], [0, 1, 0]);
-  const y = useTransform(scrollYProgress, [start - 0.05, center, end + 0.05], [150, 0, -150]);
+  const scale = useTransform(scrollYProgress, [inStart, center, inEnd], [0.8, 1, 0.8]);
+  const opacity = useTransform(scrollYProgress, [inStart, center, inEnd], [0, 1, 0]);
+  const y = useTransform(scrollYProgress, [inStart, center, inEnd], [150, 0, -150]);
   const zIndex = useTransform(scrollYProgress, [start, center, end], [0, 50, 0]);
-  const rotateXScroll = useTransform(scrollYProgress, [start - 0.05, center, end + 0.05], [20, 0, -20]);
+  const rotateXScroll = useTransform(scrollYProgress, [inStart, center, inEnd], [20, 0, -20]);
 
   const [isActive, setIsActive] = useState(false);
   
