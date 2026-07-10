@@ -103,7 +103,7 @@ const Hero = () => {
         {FLOATING_ICONS.map((item, idx) => (
           <motion.div
             key={idx}
-            className={`absolute flex items-center justify-center rounded-xl bg-white/5 border border-white/10 ${item.color} backdrop-blur-sm`}
+            className={`absolute flex items-center justify-center rounded-xl bg-white/5 border border-white/10 ${item.color} backdrop-blur-sm pointer-events-auto cursor-pointer`}
             style={{ 
               top: item.top, 
               left: item.left, 
@@ -115,6 +115,12 @@ const Hero = () => {
             animate={{ 
               y: [-8, 8, -8],
               opacity: 1
+            }}
+            whileHover={{
+              scale: 1.15,
+              backgroundColor: "rgba(255, 255, 255, 0.15)",
+              boxShadow: "0 0 20px rgba(255, 255, 255, 0.2)",
+              zIndex: 50
             }}
             transition={{
               y: {
@@ -136,7 +142,7 @@ const Hero = () => {
         {FLOATING_ICONS.slice(0, 4).map((item, idx) => (
           <motion.div
             key={`mobile-${idx}`}
-            className={`absolute flex items-center justify-center rounded-xl bg-white/5 border border-white/10 ${item.color} backdrop-blur-sm`}
+            className={`absolute flex items-center justify-center rounded-xl bg-white/5 border border-white/10 ${item.color} backdrop-blur-sm pointer-events-auto cursor-pointer`}
             style={{ 
               top: item.top, 
               left: item.left, 
@@ -148,6 +154,12 @@ const Hero = () => {
             animate={{ 
               y: [-6, 6, -6],
               opacity: 1
+            }}
+            whileHover={{
+              scale: 1.15,
+              backgroundColor: "rgba(255, 255, 255, 0.15)",
+              boxShadow: "0 0 20px rgba(255, 255, 255, 0.2)",
+              zIndex: 50
             }}
             transition={{
               y: {
