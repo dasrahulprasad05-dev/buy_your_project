@@ -7,6 +7,20 @@
     <title>Premium Developer Projects | Rahul</title>
   </head>
   <body>
+    <div id="error-log" style="color: red; position: fixed; z-index: 9999; background: black; font-family: monospace; white-space: pre-wrap; width: 100%;"></div>
+    <script>
+      window.addEventListener('error', function(e) {
+        document.getElementById('error-log').innerText += e.message + '\n' + e.filename + ':' + e.lineno + '\n';
+      });
+      window.addEventListener('unhandledrejection', function(e) {
+        document.getElementById('error-log').innerText += 'Promise rejection: ' + (e.reason ? e.reason.stack || e.reason : 'unknown') + '\n';
+      });
+      const originalError = console.error;
+      console.error = function(...args) {
+        document.getElementById('error-log').innerText += 'console.error: ' + args.join(' ') + '\n';
+        originalError.apply(console, args);
+      };
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
