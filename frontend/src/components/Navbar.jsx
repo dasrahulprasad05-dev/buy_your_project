@@ -15,10 +15,18 @@ const Navbar = () => {
             </span>
           </Link>
           
-          <div className="hidden md:flex space-x-8">
+          <div className="hidden md:flex items-center space-x-8">
             <Link to="/" className="text-gray-300 hover:text-white transition-colors text-sm font-medium">Projects</Link>
-            <a href="#" className="text-gray-300 hover:text-white transition-colors text-sm font-medium">About Me</a>
+            <a href="/#about" className="text-gray-300 hover:text-white transition-colors text-sm font-medium">About Me</a>
             <a href="#" className="text-gray-300 hover:text-white transition-colors text-sm font-medium">Contact</a>
+            
+            {/* Login Button */}
+            <Link 
+              to="/login"
+              className="bg-primary/10 border border-primary/20 text-primary hover:bg-primary hover:text-white px-5 py-2 rounded-xl text-sm font-medium transition-all duration-300 shadow-[0_0_15px_rgba(59,130,246,0.15)] hover:shadow-[0_0_20px_rgba(59,130,246,0.4)]"
+            >
+              Sign In
+            </Link>
           </div>
         </div>
       </div>
