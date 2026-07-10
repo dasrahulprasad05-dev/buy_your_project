@@ -234,6 +234,7 @@ const ProjectCard = ({ project, index, scrollYProgress }) => {
           <AnimatePresence>
             {isActive && (
               <motion.div
+                key="title-section"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
@@ -248,6 +249,7 @@ const ProjectCard = ({ project, index, scrollYProgress }) => {
           <AnimatePresence>
             {isActive && (
               <motion.div 
+                key="stats-section"
                 initial={{ opacity: 0 }} 
                 animate={{ opacity: 1 }} 
                 transition={{ delay: 0.3 }}
@@ -268,6 +270,7 @@ const ProjectCard = ({ project, index, scrollYProgress }) => {
           <AnimatePresence>
             {isActive && (
               <motion.div
+                 key="highlight-section"
                  initial={{ opacity: 0, x: -20 }}
                  animate={{ opacity: 1, x: 0 }}
                  transition={{ delay: 0.5 }}
@@ -284,6 +287,7 @@ const ProjectCard = ({ project, index, scrollYProgress }) => {
         <AnimatePresence>
           {isActive && (
             <motion.div 
+              key="cta-section"
               initial={{ opacity: 0, y: 20 }} 
               animate={{ opacity: 1, y: 0 }} 
               transition={{ delay: 0.7 }}
