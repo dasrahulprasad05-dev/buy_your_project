@@ -30,7 +30,7 @@ const ProjectDetails = () => {
         };
 
         try {
-          const res = await axios.get(`http://localhost:5000/api/projects/${id}`);
+          const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/projects/${id}`);
           setProject(res.data);
         } catch (err) {
           console.log("Using dummy data");

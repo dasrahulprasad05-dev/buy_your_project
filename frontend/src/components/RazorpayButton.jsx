@@ -40,11 +40,11 @@ const RazorpayButton = ({ project }) => {
       let keyId = 'rzp_test_123';
 
       try {
-        const result = await axios.post('http://localhost:5000/api/payment/checkout', orderData);
+        const result = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/payment/checkout`, orderData);
         orderId = result.data.orderId;
         rzpOrderId = result.data.order.id;
         
-        const keyResult = await axios.get('http://localhost:5000/api/payment/key');
+        const keyResult = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/payment/key`);
         keyId = keyResult.data.key;
       } catch (err) {
         console.log("Backend not reachable. Running in demo mode.");
@@ -66,7 +66,7 @@ const RazorpayButton = ({ project }) => {
               razorpay_signature: response.razorpay_signature,
               orderId: orderId
             };
-            const verifyResult = await axios.post('http://localhost:5000/api/payment/verify', verifyData);
+            const verifyResult = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/payment/verify`, verifyData);
             if (verifyResult.data.success) {
               alert('Payment Successful!');
             }

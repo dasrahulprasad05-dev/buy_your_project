@@ -32,7 +32,7 @@ const Home = () => {
         ];
 
         try {
-          const res = await axios.get('http://localhost:5000/api/projects');
+          const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/projects`);
           setProjects(res.data.length > 0 ? res.data : dummyData);
         } catch (err) {
           console.log("Using dummy data, backend might not be running.");
