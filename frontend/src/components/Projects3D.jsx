@@ -253,7 +253,7 @@ const VariantNeon = ({ project, isActive, index }) => (
     </div>
     
     <div className="flex justify-between items-end relative z-10">
-      <div className="text-xs font-mono text-gray-500 max-w-[200px]">> {project.highlight}</div>
+      <div className="text-xs font-mono text-gray-500 max-w-[200px]">&gt; {project.highlight}</div>
       <a href={`https://${project.cta}`} target="_blank" rel="noopener noreferrer" className="px-6 py-3 font-mono font-bold text-sm uppercase transition-all hover:scale-105" style={{ background: project.accent, color: '#000', boxShadow: `0 0 15px ${project.accent}` }}>Execute</a>
     </div>
   </div>
