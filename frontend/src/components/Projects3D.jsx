@@ -133,6 +133,51 @@ const PROJECTS = [
     border: "border-rose-400/40",
     glow: "0 0 40px rgba(244,63,94,0.45), 0 0 80px rgba(244,63,94,0.15)",
   },
+  {
+    id: 8,
+    title: "Campus Flow",
+    tagline: "Comprehensive student management system for seamless campus operations",
+    highlight: "Features an optimized dashboard with global loading states",
+    stats: [
+      { label: "Modules", value: 5, suffix: "+" },
+      { label: "Efficiency", value: 99, suffix: "%" },
+    ],
+    cta: "campus-flow-sand-five.vercel.app",
+    accent: "#3b82f6",
+    gradient: "from-blue-500/30 via-sky-500/10 to-transparent",
+    border: "border-blue-400/40",
+    glow: "0 0 40px rgba(59,130,246,0.45), 0 0 80px rgba(59,130,246,0.15)",
+  },
+  {
+    id: 9,
+    title: "Rahul Gym",
+    tagline: "Modern gym website for fitness tracking and membership management",
+    highlight: "Includes secure authentication and a dedicated member dashboard",
+    stats: [
+      { label: "Plans", value: 3, suffix: "+" },
+      { label: "Members", value: 200, suffix: "+" },
+    ],
+    cta: "rahul-gym-jade.vercel.app",
+    accent: "#eab308",
+    gradient: "from-yellow-500/30 via-amber-500/10 to-transparent",
+    border: "border-yellow-400/40",
+    glow: "0 0 40px rgba(234,179,8,0.45), 0 0 80px rgba(234,179,8,0.15)",
+  },
+  {
+    id: 10,
+    title: "ABIT Annual Function",
+    tagline: "Event management platform for organizing the college annual function",
+    highlight: "Streamlines scheduling, updates, and student registrations",
+    stats: [
+      { label: "Events", value: 15, suffix: "+" },
+      { label: "Attendees", value: 800, suffix: "+" },
+    ],
+    cta: "abit-anual-function.vercel.app",
+    accent: "#a855f7",
+    gradient: "from-purple-500/30 via-fuchsia-500/10 to-transparent",
+    border: "border-purple-400/40",
+    glow: "0 0 40px rgba(168,85,247,0.45), 0 0 80px rgba(168,85,247,0.15)",
+  },
 ];
 
 const POOL_ICONS = [
