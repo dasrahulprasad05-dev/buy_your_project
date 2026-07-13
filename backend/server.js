@@ -4,6 +4,7 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import projectRoutes from "./routes/projectRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(express.json());
 // Routes
 app.use("/api/projects", projectRoutes);
 app.use("/api/payment", paymentRoutes);
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.send("Rahul Developer API is running...");

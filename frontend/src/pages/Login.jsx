@@ -178,31 +178,44 @@ const Login = () => {
   
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError("");
 
-    if (isForgotPassword) {
-      setTimeout(() => {
-        setLoading(false);
-        setResetSent(true);
-      }, 1500);
-      return;
-    }
-
-    setTimeout(() => {
+    try {
+      const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
+      const body = isLogin ? { email, password } : { name, email, password };
+      
+      const res = await fetch(`http://localhost:5000${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      
+      const data = await res.json();
+      
+      if (data.success) {
+        // Save token to localStorage (optional)
+        localStorage.setItem('token', data.token);
+        navigate("/");
+      } else {
+        setError(data.error || "Authentication failed");
+      }
+    } catch (err) {
+      setError("Server connection failed");
+    } finally {
       setLoading(false);
-      navigate("/");
-    }, 1500);
+    }
   };
 
   const toggleMode = () => {
     setIsLogin((v) => !v);
     setName("");
-    setIsForgotPassword(false);
-    setResetSent(false);
+    setError("");
   };
   
   const strength = getPasswordStrength(password);
@@ -419,13 +432,12 @@ const Login = () => {
                             Password
                           </label>
                           {isLogin && (
-                            <button
-                              type="button"
-                              onClick={() => setIsForgotPassword(true)}
+                            <Link
+                              to="/forgot-password"
                               className="text-xs text-primary hover:text-blue-400 transition-colors"
                             >
                               Forgot password?
-                            </button>
+                            </Link>
                           )}
                         </div>
                         <Field

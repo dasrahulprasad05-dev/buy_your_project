@@ -4,6 +4,8 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import ProjectDetails from './pages/ProjectDetails';
 import Login from './pages/Login';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/project/:id" element={<ProjectDetails />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
           </Routes>
         </main>
         <Footer />
