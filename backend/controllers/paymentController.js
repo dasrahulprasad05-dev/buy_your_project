@@ -1,6 +1,8 @@
 import Razorpay from "razorpay";
 import crypto from "crypto";
 import Order from "../models/Order.js";
+import Project from "../models/Project.js";
+import sendEmail from "../utils/sendEmail.js";
 
 // Initialize Razorpay instance
 const razorpay = new Razorpay({
@@ -18,7 +20,7 @@ export const checkout = async (req, res, next) => {
     const options = {
       amount: Number(amount) * 100, // amount in smallest currency unit (paise)
       currency: "INR",
-      receipt: `receipt_order_${Math.random() * 1000}`,
+      receipt: `receipt_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
     };
 
     const order = await razorpay.orders.create(options);
@@ -62,11 +64,44 @@ export const verifyPayment = async (req, res, next) => {
 
     if (isAuthentic) {
       // Update order in DB
-      await Order.findByIdAndUpdate(orderId, {
+      const updatedOrder = await Order.findByIdAndUpdate(orderId, {
         razorpayPaymentId: razorpay_payment_id,
         razorpaySignature: razorpay_signature,
         status: "Completed",
-      });
+      }, { new: true });
+
+      // Send purchase confirmation email
+      if (updatedOrder && updatedOrder.customerEmail) {
+        try {
+          const project = await Project.findById(updatedOrder.project);
+          const projectTitle = project ? project.title : 'your project';
+
+          const html = `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+              <h2 style="color: #06b6d4;">Payment Successful! 🎉</h2>
+              <p>Hi ${updatedOrder.customerName},</p>
+              <p>Your purchase of <strong>${projectTitle}</strong> has been confirmed.</p>
+              <div style="background: #f0f9ff; padding: 16px; border-radius: 8px; margin: 20px 0;">
+                <p style="margin: 4px 0;"><strong>Order ID:</strong> ${updatedOrder.razorpayOrderId}</p>
+                <p style="margin: 4px 0;"><strong>Payment ID:</strong> ${razorpay_payment_id}</p>
+                <p style="margin: 4px 0;"><strong>Amount:</strong> ₹${updatedOrder.amount}</p>
+              </div>
+              <p>Thank you for your purchase! If you have any questions, feel free to reach out.</p>
+              <p style="margin-top: 30px; font-size: 12px; color: #888;">— The Buy Your Project Team</p>
+            </div>
+          `;
+
+          await sendEmail({
+            email: updatedOrder.customerEmail,
+            subject: `Purchase Confirmed — ${projectTitle}`,
+            message: `Hi ${updatedOrder.customerName}, your purchase of ${projectTitle} for ₹${updatedOrder.amount} was successful. Payment ID: ${razorpay_payment_id}`,
+            html
+          });
+        } catch (emailErr) {
+          console.error("Purchase confirmation email failed:", emailErr);
+          // Don't fail the payment verification if email fails
+        }
+      }
 
       res.status(200).json({
         success: true,
@@ -83,3 +118,4 @@ export const verifyPayment = async (req, res, next) => {
     res.status(500).json({ message: "Payment verification failed" });
   }
 };
+

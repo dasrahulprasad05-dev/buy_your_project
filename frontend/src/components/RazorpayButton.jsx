@@ -1,10 +1,23 @@
 import { useState } from 'react';
-import axios from 'axios';
 import { Loader2 } from 'lucide-react';
+// import axios from 'axios'; // Commented out for now
+
+// Helper to decode JWT payload (without verification — just reading the claims)
+const getLoggedInUser = () => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload;
+  } catch {
+    return null;
+  }
+};
 
 const RazorpayButton = ({ project }) => {
   const [loading, setLoading] = useState(false);
 
+  /* --- RAZORPAY LOGIC (Commented out until keys are available) ---
   const loadRazorpay = () => {
     return new Promise((resolve) => {
       const script = document.createElement('script');
@@ -14,9 +27,18 @@ const RazorpayButton = ({ project }) => {
       document.body.appendChild(script);
     });
   };
+  -------------------------------------------------------------- */
 
   const handlePayment = async () => {
     setLoading(true);
+    
+    // Simulate network delay
+    setTimeout(() => {
+      alert("Payment gateway integration is coming soon! (Razorpay keys pending)");
+      setLoading(false);
+    }, 800);
+
+    /* --- RAZORPAY LOGIC (Commented out until keys are available) ---
     try {
       const res = await loadRazorpay();
       
@@ -26,11 +48,16 @@ const RazorpayButton = ({ project }) => {
         return;
       }
 
+      // Get logged-in user info from JWT, or use guest fallback
+      const user = getLoggedInUser();
+      const customerName = user?.name || 'Guest User';
+      const customerEmail = user?.email || 'guest@example.com';
+
       // 1. Create order on the backend
       const orderData = {
         amount: project.price,
-        customerName: 'Guest User', // Hardcoded for demo, normally from form/auth
-        customerEmail: 'guest@example.com',
+        customerName,
+        customerEmail,
         projectId: project._id
       };
       
@@ -57,7 +84,7 @@ const RazorpayButton = ({ project }) => {
         currency: 'INR',
         name: 'Rahul Developer',
         description: `Purchase of ${project.title}`,
-        order_id: rzpOrderId, // In demo mode this will be invalid, but UI might still show.
+        order_id: rzpOrderId,
         handler: async function (response) {
           try {
             const verifyData = {
@@ -75,8 +102,8 @@ const RazorpayButton = ({ project }) => {
           }
         },
         prefill: {
-          name: 'Guest User',
-          email: 'guest@example.com',
+          name: customerName,
+          email: customerEmail,
           contact: '9999999999'
         },
         theme: {
@@ -93,6 +120,7 @@ const RazorpayButton = ({ project }) => {
     } finally {
       setLoading(false);
     }
+    -------------------------------------------------------------- */
   };
 
   return (
@@ -107,3 +135,4 @@ const RazorpayButton = ({ project }) => {
 };
 
 export default RazorpayButton;
+

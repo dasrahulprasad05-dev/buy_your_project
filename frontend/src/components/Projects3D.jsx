@@ -38,14 +38,14 @@ const PROJECTS = [
   },
   {
     id: 3,
-    title: "Rahul Devloper",
+    title: "Rahul Developer",
     tagline: "My personal developer portfolio, showcasing projects and skills",
     highlight: "Fully responsive, dark-themed portfolio built from scratch",
     stats: [
       { label: "Projects", value: 8, suffix: "+" },
       { label: "Performance", value: 99, suffix: " score" },
     ],
-    cta: "rahul-devloper.vercel.app",
+    cta: "rahul-developer.vercel.app",
     accent: "#d946ef",
   },
   {

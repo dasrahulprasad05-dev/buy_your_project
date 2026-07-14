@@ -19,6 +19,15 @@ export const register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
 
+    // Validate required fields
+    if (!name || !email || !password) {
+      return res.status(400).json({ success: false, error: 'Please provide name, email and password' });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({ success: false, error: 'Password must be at least 6 characters' });
+    }
+
     // Create user
     const user = await User.create({
       name,
