@@ -28,6 +28,12 @@ export const register = async (req, res, next) => {
       return res.status(400).json({ success: false, error: 'Password must be at least 6 characters' });
     }
 
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ success: false, error: 'An account with this email already exists. Please log in.' });
+    }
+
     // Create user
     const user = await User.create({
       name,
@@ -36,28 +42,23 @@ export const register = async (req, res, next) => {
     });
 
     // Send Welcome Email
-    try {
-      const message = `Hello ${name},\n\nWelcome to Buy Your Project! We are glad to have you on board. Start exploring premium developer templates today.\n\nBest,\nThe Buy Your Project Team`;
-      
-      const html = `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
-          <h2 style="color: #06b6d4;">Welcome to Buy Your Project, ${name}!</h2>
-          <p>We are thrilled to have you on board. Start exploring our premium, ready-to-use developer templates to accelerate your workflow.</p>
-          <a href="${req.protocol}://${req.get('host')}" style="display: inline-block; padding: 10px 20px; color: #fff; background-color: #06b6d4; text-decoration: none; border-radius: 5px; margin-top: 20px;">Explore Projects</a>
-          <p style="margin-top: 30px; font-size: 12px; color: #888;">If you didn't create this account, please ignore this email.</p>
-        </div>
-      `;
+    const message = `Hello ${name},\n\nWelcome to Buy Your Project! We are glad to have you on board. Start exploring premium developer templates today.\n\nBest,\nThe Buy Your Project Team`;
+    
+    const html = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+        <h2 style="color: #06b6d4;">Welcome to Buy Your Project, ${name}!</h2>
+        <p>We are thrilled to have you on board. Start exploring our premium, ready-to-use developer templates to accelerate your workflow.</p>
+        <a href="${req.protocol}://${req.get('host')}" style="display: inline-block; padding: 10px 20px; color: #fff; background-color: #06b6d4; text-decoration: none; border-radius: 5px; margin-top: 20px;">Explore Projects</a>
+        <p style="margin-top: 30px; font-size: 12px; color: #888;">If you didn't create this account, please ignore this email.</p>
+      </div>
+    `;
 
-      await sendEmail({
-        email: user.email,
-        subject: 'Welcome to Buy Your Project!',
-        message,
-        html
-      });
-    } catch (err) {
-      console.error('Welcome email could not be sent', err);
-      // We don't fail the registration if email fails, just log it.
-    }
+    sendEmail({
+      email: user.email,
+      subject: 'Welcome to Buy Your Project!',
+      message,
+      html
+    }).catch(err => console.error('Welcome email could not be sent', err));
 
     sendTokenResponse(user, 201, res);
   } catch (error) {
